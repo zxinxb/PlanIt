@@ -1,33 +1,69 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TextInput, ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
+import axios, { AxiosError } from 'axios';
 
-const activities = [
-  {
-    id: '1',
-    name: 'Cook SMV with Natali',
-    price: '50 USD',
-    image: 'https://your-image-link.com/cook.jpg',
-    provider: 'Natali',
-  },
-  {
-    id: '2',
-    name: 'Boat Ride in Colombo',
-    price: '30 USD',
-    image: 'https://your-image-link.com/boat.jpg',
-    provider: 'John',
-  },
-  {
-    id: '3',
-    name: 'Pottery Workshop',
-    price: '40 USD',
-    image: 'https://your-image-link.com/pottery.jpg',
-    provider: 'Anna',
-  },
-];
+interface Activity {
+  id: string;
+  name: string;
+  price: string;
+  image: string;
+  provider: string;
+}
 
 export default function BookActivity() {
-  const renderActivity = ({ item }: any) => (
+  const [activities, setActivities] = useState<Activity[]>([
+    // Default activities for initial display
+    {
+      id: '1',
+      name: 'Cooking Class with Natali',
+      price: '4500 LKR',
+      image: 'https://your-image-link.com/cooking.jpg',
+      provider: 'Natali',
+    },
+    {
+      id: '2',
+      name: 'Boat Ride in Colombo',
+      price: '1000 LKR',
+      image: 'https://your-image-link.com/boat.jpg',
+      provider: 'John',
+    },
+    {
+      id: '3',
+      name: 'Pottery Workshop',
+      price: '5000 LKR',
+      image: 'https://your-image-link.com/pottery.jpg',
+      provider: 'Anna',
+    },
+  ]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const fetchActivities = async (query = '') => {
+    setLoading(true);
+    try {
+      const response = await axios.get<Activity[]>('http://192.168.8.191:5000/activities', {
+        params: { search: query },
+      });
+      setActivities(response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error:', error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        console.error('Error:', error.message);
+      } else {
+        console.error('Unknown error occurred');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, []);
+
+  const renderActivity = ({ item }: { item: Activity }) => (
     <Link
       href={{
         pathname: '/activity-details',
@@ -35,7 +71,10 @@ export default function BookActivity() {
       }}
       style={styles.activityCard}
     >
-      <Image source={require("../../assets/images/background-image.jpeg")} style={styles.activityImage} />
+      <Image
+        source={item.image ? { uri: item.image } : require('../../assets/images/background-image.jpeg')}
+        style={styles.activityImage}
+      />
       <View style={styles.activityInfo}>
         <Text style={styles.activityName}>{item.name}</Text>
         <Text style={styles.activityPrice}>{item.price}</Text>
@@ -49,13 +88,22 @@ export default function BookActivity() {
         style={styles.searchBar}
         placeholder="Search activities..."
         placeholderTextColor="#aaa"
+        value={searchQuery}
+        onChangeText={(text) => {
+          setSearchQuery(text);
+          fetchActivities(text);
+        }}
       />
-      <FlatList
-        data={activities}
-        keyExtractor={(item) => item.id}
-        renderItem={renderActivity}
-        contentContainerStyle={styles.list}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList<Activity>
+          data={activities}
+          keyExtractor={(item) => item.id}
+          renderItem={renderActivity}
+          contentContainerStyle={styles.list}
+        />
+      )}
     </View>
   );
 }
@@ -65,12 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
   },
   searchBar: {
     borderWidth: 1,
@@ -108,5 +150,8 @@ const styles = StyleSheet.create({
   activityPrice: {
     fontSize: 16,
     color: '#666',
-  },
+  },
 });
+
+
+

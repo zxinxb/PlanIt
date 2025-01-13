@@ -18,7 +18,7 @@ export default function CreateTrip({ navigation }: any) {
         style={styles.createButton}
         onPress={() => setPopUpVisible(true)}
       >
-        <Text style={styles.buttonText}>Create Trip</Text>
+        <Text style={styles.buttonText}>Create</Text>
       </TouchableOpacity>
 
       {/* Pop-Up Modal */}
@@ -32,7 +32,7 @@ export default function CreateTrip({ navigation }: any) {
           <View style={styles.popUp}>
           <TouchableOpacity style={styles.optionButton}>
       <Link href="/create-trip/create-travel-plan" style={styles.optionButtonText}>
-        Create Travel Plan
+        Travel Plan
       </Link>
     </TouchableOpacity>
             <TouchableOpacity

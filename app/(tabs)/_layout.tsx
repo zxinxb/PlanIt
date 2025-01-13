@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
+
 
 export default function TabsLayout() {
   const [isCreateTripModalVisible, setCreateTripModalVisible] = useState(false);
@@ -17,18 +19,33 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="index"
           options={{
+            title: 'Home',
             headerShown: false,
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" size={size} color={color} />
+              <Image
+                source={require("../../assets/icons/home-2.png")} // Path to your custom icon
+                style={{
+                  width: size, // Dynamically set the size from the tabBarIcon props
+                  height: size,
+                  tintColor: color, // Use the color prop to tint the image dynamically
+                }}
+              />
             ),
           }}
         />
         <Tabs.Screen
           name="book-activity"
           options={{
-            title: 'Book Activity',
+            title: 'Activity',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="calendar" size={size} color={color} />
+              <Image
+                source={require("../../assets/icons/calendar.png")} // Path to your custom icon
+                style={{
+                  width: size, // Dynamically set the size from the tabBarIcon props
+                  height: size,
+                  tintColor: color, // Use the color prop to tint the image dynamically
+                }}
+              />
             ),
           }}
         />
@@ -40,7 +57,7 @@ export default function TabsLayout() {
                 style={styles.createTripButton}
                 onPress={openCreateTripModal}
               >
-                <Ionicons name="add-circle" size={40} color="#FF6347" />
+                <Ionicons name="add-circle" size={45} color="#FF6347" />
               </TouchableOpacity>
             ),
           }}
@@ -50,16 +67,30 @@ export default function TabsLayout() {
           options={{
             title: 'Account',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person" size={size} color={color} />
+              <Image
+                source={require("../../assets/icons/frame.png")} // Path to your custom icon
+                style={{
+                  width: size, // Dynamically set the size from the tabBarIcon props
+                  height: size,
+                  tintColor: color, // Use the color prop to tint the image dynamically
+                }}
+              />
             ),
           }}
         />
         <Tabs.Screen
           name="ai-assistant"
           options={{
-            title: 'Ai Assistant',
+            title: 'AI Assistant',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="star" size={size} color={color} />
+              <Image
+                source={require("../../assets/icons/story.png")} // Path to your custom icon
+                style={{
+                  width: size, // Dynamically set the size from the tabBarIcon props
+                  height: size,
+                  tintColor: color, // Use the color prop to tint the image dynamically
+                }}
+              />
             ),
           }}
         />
@@ -74,7 +105,7 @@ export default function TabsLayout() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Create a Trip</Text>
+            <Text style={styles.modalTitle}>Create</Text>
             <TouchableOpacity
               style={styles.optionButton}
               onPress={() => {
@@ -82,7 +113,7 @@ export default function TabsLayout() {
                 console.log('Navigate to Create Travel Plan');
               }}
             >
-              <Text style={styles.optionText}>Create Travel Plan</Text>
+              <Text style={styles.optionText}>Travel Plan</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.optionButton}
