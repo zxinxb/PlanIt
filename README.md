@@ -1,3 +1,7 @@
+The UI for this app was designed using Figma (https://www.figma.com/design/QTq9qDvcewxrCqTSwDLB6j/PlanIIt?node-id=0-1&p=f&t=dBYdLv61aFSAlX9D-0)
+
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
