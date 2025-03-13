@@ -44,6 +44,7 @@ export default function CreateTrip({ navigation }: any) {
           </View>
         </View>
       </Modal>
+      
     </View>
   );
 }
